@@ -36,9 +36,9 @@ avg / total       0.86      0.86      0.86        44
 
 Accuracy : 0.863636363636
 - - - -
-LogisticRegression
+LogisticRegression 
 
-             precision    recall  f1-score   support
+             precision    recall  f1-score   support
         0.0       0.92      0.95      0.94        38
         1.0       0.60      0.50      0.55         6
 
