@@ -6,6 +6,7 @@ sys.path.append("../tools/")
 
 from feature_format import featureFormat, targetFeatureSplit
 from tester import dump_classifier_and_data
+import numpy as np
 
 ### Task 1: Select what features you'll use.
 ### features_list is a list of strings, each of which is a feature name.
@@ -132,83 +133,66 @@ print " "
 cv = StratifiedShuffleSplit(labels, 100, random_state = 42)
 
 ### LogisticRegression ###
-param_range=[0.000001,0.00001, 0.0001, 0.001, 0.01, 0.1, 1.0]
 
+cv = StratifiedShuffleSplit(labels, 100, random_state = 42)
+param_range=np.arange(0.00001,0.0001,0.00001)
 param_grid=[{'clf__C':param_range}]
-
 gs_Logistic = GridSearchCV(estimator=pipe2,
                    param_grid=param_grid,
-                   scoring='accuracy',
+                   scoring='f1',
                    cv=cv,
                    n_jobs=-1)
 
 gs_Logistic = gs_Logistic.fit(features, labels)
 pred = gs_Logistic.predict(features)
-print "Hyperparameter Tunning"
-print "-------------------------------------"
-print "LOGISTIC REGRESSION"
-print "Report\n",classification_report(pred, labels)
-print " "
-print "Best score\n",(gs_Logistic.best_score_)
-print " "
-print "Best Estimator\n",gs_Logistic.best_estimator_
+best_Logistic = gs_Logistic.best_estimator_
+print classification_report(pred, labels)
+print(gs_Logistic.best_score_)
+print best_Logistic
+
+best_Logistic.fit(features_train,labels_train)
+pred = best_Logistic.predict(features_test)
+print classification_report(pred,labels_test)
 
 
-### SVM ###
-pipe_svc = Pipeline([('scl', StandardScaler()),
-                     ('clf', SVC(random_state=1))])
-param_range=[0.0001, 0.001, 0.01, 0.1, 1.0, 10.0, 100.0, 1000.0]
+### KN ###
 
-param_grid=[{'clf__C':param_range,
-             'clf__kernel':['linear']},
-            {'clf__C':param_range,
-             'clf__gamma':param_range,
-             'clf__kernel':['rbf']}]
+from sklearn.decomposition import PCA
 
-gs_SVM = GridSearchCV(estimator=pipe_svc,
-                 param_grid=param_grid,
-                 scoring='accuracy',
-                 cv=cv,
-                 n_jobs=-1)
+param_grid = [{'reduce_dim__n_components' : [1,2,3,4],
+              'clf__n_neighbors' : [3,5,7,9],
+              'clf__weights' : ['uniform', 'distance'],
+              'clf__algorithm' : ['ball_tree', 'kd_tree', 'brute','auto'],
+              'clf__leaf_size' : [30, 10, 15, 20]}]
 
-gs_SVM.fit(features, labels)
-pred = gs_SVM.predict(features)
+KN = KNeighborsClassifier()
+pca = PCA()
 
-print "-------------------------------------"
-print "SVM"
-print "Report\n",classification_report(pred, labels)
-print " "
-print "Best Score \n", gs_SVM.best_score_
-print " "
-print "Best Estimator \n", gs_SVM.best_estimator_
+pipe = Pipeline([['reduce_dim',pca],
+                 ['clf',KN]])
 
-### KNN ###
-pipe_knn = Pipeline([('scl', StandardScaler()),
-                     ('clf', KNeighborsClassifier())])
+gs_KN = GridSearchCV(estimator=pipe,
+                   param_grid=param_grid,
+                   scoring='f1',
+                   cv=cv,
+                   n_jobs=-1)
 
-param_range=[1,3,5,7]
 
-param_grid=[{'clf__n_neighbors':param_range}]
 
-gs_KNN = GridSearchCV(estimator=pipe_knn,
-                      param_grid=param_grid,
-                      scoring='accuracy',
-                      cv=cv,
-                      n_jobs=-1)
-gs_KNN.fit(features, labels)
-pred = gs_KNN.predict(features)
+gs_KN = gs_KN.fit(features, labels)
+pred = gs_KN.predict(features)
+best_KN = gs_KN.best_estimator_
+print classification_report(pred, labels)
+print(gs_KN.best_score_)
+print best_KN
 
-print "-------------------------------------"
-print "KNN"
-print "Report\n",classification_report(pred,labels)
-print " "
-print "Best score\n",gs_KNN.best_score_
-print " "
-print "Best estimator\n",gs_KNN.best_estimator_
+best_KN.fit(features_train,labels_train)
+pred = best_KN.predict(features_test)
+print classification_report(pred,labels_test)
 
 ### Task 6: Dump your classifier, dataset, and features_list so anyone can
 ### check your results. You do not need to change anything below, but make sure
 ### that the version of poi_id.py that you submit can be run on its own and
 ### generates the necessary .pkl files for validating your results.
-clf = gs_SVM.best_estimator_
+clf = best_KN
 dump_classifier_and_data(clf, my_dataset, features_list)
