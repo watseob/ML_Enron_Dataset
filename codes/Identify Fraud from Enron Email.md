@@ -12,12 +12,15 @@ My final features selection is below.
 ['poi', 'salary', 'bonus', 'total_payments', 'long_term_incentive', 'deferred_income','total_stock_value','restricted_stock','exercised_stock_options', 'expenses', 'other', ’fraction_from_poi’, ‘fraction_to_poi’]  
 
 There are too many missing values in restricted_stock_deferred, director_fees, deferral_payments and loan_advances. So, I removed them first. I set up Random Forest Classifier  model and then check feature importance. There is no feature which has too low important to use, so i didn’t remove any features.
-—picture—
+<img src='feature_selection.png'>  
 
 I created ‘fraction_from_poi’ and ’fraction_to_poi’. 
-fraction_from_poi = from_poi_to_this_person / to_messages
-fraction_to_poi = from_this_person_to_poi / from_messages
-As we can see above picture new features are pretty important.
+  
+fraction_from_poi = from_poi_to_this_person / to_messages  
+fraction_to_poi = from_this_person_to_poi / from_messages  
+  
+The emails from poi out of total received mails and to poi out of total sent mails will show relationship between poi well.
+As we can see above picture new features are pretty important as well.
 Also, this makes a dimension reduced.
 
 I use standard scaler for a feature scaling at logistic regression model. In logistic regression ,feature scaling makes model better. On the other hand, features scaling made worse in K-Neighbors.
