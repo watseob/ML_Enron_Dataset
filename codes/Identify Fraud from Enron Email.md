@@ -26,9 +26,9 @@ Also, this makes a dimension reduced.
 The difference performances between before creating new features and after creating new features is shown below.
 With creating new features, we can get a better model.
   
-  
-Before New features
 - - - -
+Before New features
+
                    precision    recall  f1-score   support
 
             0.0       0.95      0.92      0.94        39
@@ -38,7 +38,6 @@ Before New features
   
   
 After New features
-- - - - 
  
                     precision    recall  f1-score   support
 
