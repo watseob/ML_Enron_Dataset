@@ -23,6 +23,29 @@ fraction_to_poi = from_this_person_to_poi / from_messages
 The emails from poi out of total received mails and to poi out of total sent mails will show relationship between poi well.
 As we can see above picture new features are pretty important as well.
 Also, this makes a dimension reduced.
+The difference performances between before creating new features and after creating new features is shown below.
+With creating new features, we can get a better model.
+  
+  
+Before New features
+- - - -
+                   precision    recall  f1-score   support
+
+            0.0       0.95      0.92      0.94        39
+            1.0       0.40      0.50      0.44         4
+
+    avg / total       0.90      0.88      0.89        43
+  
+  
+After New features
+- - - - 
+ 
+                    precision    recall  f1-score   support
+
+            0.0       0.99      0.92      0.95       135
+            1.0       0.39      0.88      0.54         8
+    avg / total       0.96      0.92      0.93       143
+- - - -
 
 I use standard scaler for a feature scaling at logistic regression model. In logistic regression ,feature scaling makes model better. On the other hand, features scaling made worse in K-Neighbors.
 
@@ -32,51 +55,51 @@ I use standard scaler for a feature scaling at logistic regression model. In log
 
 GaussianNB 
 
-             precision    recall  f1-score   support
-        0.0       0.92      0.92      0.92        39
-        1.0       0.40      0.40      0.40         5
+                   precision    recall  f1-score   support
+            0.0       0.92      0.92      0.92        39
+            1.0       0.40      0.40      0.40         5
 
-avg / total       0.86      0.86      0.86        44
+    avg / total       0.86      0.86      0.86        44
 
 Accuracy : 0.863636363636
 - - - -
 LogisticRegression 
 
-             precision    recall  f1-score   support
-        0.0       0.92      0.95      0.94        38
-        1.0       0.60      0.50      0.55         6
+                   precision    recall  f1-score   support
+            0.0       0.92      0.95      0.94        38
+            1.0       0.60      0.50      0.55         6
 
-avg / total       0.88      0.89      0.88        44
+    avg / total       0.88      0.89      0.88        44
 
 Accuracy : 0.886363636364
 - - - -
 SVM 
              
-             precision    recall  f1-score   support
-        0.0       1.00      0.89      0.94        44
-        1.0       0.00      0.00      0.00         0
+                   precision    recall  f1-score   support
+            0.0       1.00      0.89      0.94        44
+            1.0       0.00      0.00      0.00         0
 
-avg / total       1.00      0.89      0.94        44
+    avg / total       1.00      0.89      0.94        44
 
 Accuracy : 0.886363636364
 - - - -
 KNN 
 
-             precision    recall  f1-score   support
-        0.0       0.97      0.93      0.95        41
-        1.0       0.40      0.67      0.50         3
+                   precision    recall  f1-score   support
+            0.0       0.97      0.93      0.95        41
+            1.0       0.40      0.67      0.50         3
 
-avg / total       0.94      0.91      0.92        44
+    avg / total       0.94      0.91      0.92        44
 
 Accuracy : 0.909090909091
 - - - -
 AdaBoost 
 
-             precision    recall  f1-score   support
-        0.0       0.95      0.90      0.92        41
-        1.0       0.20      0.33      0.25         3
+                   precision    recall  f1-score   support
+            0.0       0.95      0.90      0.92        41
+            1.0       0.20      0.33      0.25         3
 
-avg / total       0.90      0.86      0.88        44
+    avg / total       0.90      0.86      0.88        44
 
 Accuracy : 0.863636363636
 
